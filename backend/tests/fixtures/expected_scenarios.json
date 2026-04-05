@@ -1,0 +1,48 @@
+{
+  "scenario1": {
+    "description": "Agreement — safe conditions (150°C, 60rpm)",
+    "input": {
+      "material": "Material A",
+      "equipment_type": "mixer",
+      "conditions": {
+        "temperature_celsius": 150,
+        "rpm": 60,
+        "input_rate_kg_h": 25,
+        "blade_type": "A",
+        "machine_prop_a": 50,
+        "machine_prop_b": 50,
+        "machine_prop_c": 50
+      }
+    }
+  },
+  "scenario2": {
+    "description": "Conflict — killer scenario (210°C, 100rpm)",
+    "input": {
+      "material": "Material A",
+      "equipment_type": "mixer",
+      "conditions": {
+        "temperature_celsius": 210,
+        "rpm": 100,
+        "input_rate_kg_h": 25,
+        "blade_type": "A",
+        "machine_prop_a": 50,
+        "machine_prop_b": 50,
+        "machine_prop_c": 50
+      }
+    }
+  },
+  "scenario3": {
+    "description": "No domain data (Material G, grinder)",
+    "input": {
+      "material": "Material G",
+      "equipment_type": "grinder",
+      "conditions": {
+        "feed_rate_kg_h": 10,
+        "grinding_pressure_mpa": 0.8,
+        "classifier_rpm": 8000,
+        "air_flow": 50,
+        "bulk_density": 0.8
+      }
+    }
+  }
+}

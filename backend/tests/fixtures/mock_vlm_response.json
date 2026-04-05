@@ -1,0 +1,29 @@
+{
+  "text_blocks": [
+    {
+      "content": "Material X exhibits thermal decomposition onset at 180°C under standard atmospheric conditions. Testing was conducted across multiple RPM settings (60, 90, 100 rpm) with sigma blade configuration.",
+      "page": 1,
+      "chunk_type": "text"
+    }
+  ],
+  "tables": [
+    {
+      "headers": ["Condition", "RPM", "Onset Temperature (°C)", "Decomposition Rate"],
+      "rows": [
+        ["Standard", "60", "188", "Low"],
+        ["Elevated", "90", "182", "Medium"],
+        ["Critical", "100", "175", "High"]
+      ],
+      "page": 2,
+      "chunk_type": "table"
+    }
+  ],
+  "figures": [
+    {
+      "description": "TGA curve showing thermal decomposition of Material X.",
+      "semantic_summary": "Thermal runaway risk above 200°C. Material X shows rapid decomposition with 85% mass loss between 200-350°C.",
+      "page": 3,
+      "chunk_type": "figure"
+    }
+  ]
+}

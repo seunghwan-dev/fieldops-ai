@@ -1,0 +1,24 @@
+{
+  "success": {
+    "fused_prediction": 180,
+    "correction_applied": true,
+    "correction_delta": -43.1,
+    "correction_reason": "Domain knowledge indicates thermal runaway above 200°C. Paper-A Table 2 shows onset at 175°C for 100rpm.",
+    "domain_evidence": ["Paper-A, Table 2: onset 175°C at 100rpm", "Paper-A, Figure 1: TGA shows rapid decomposition above 200°C"],
+    "risk_level": "CRITICAL",
+    "recommendation": "Do NOT process Material A above 180°C at 100rpm.",
+    "confidence_score": 0.88
+  },
+  "invalid_json": "```json\n{\"fused_prediction\": 180, \"correction_applied\": true}\n```",
+  "chinese": "{\"fused_prediction\": 180, \"correction_reason\": \"热失控风险超过200°C\", \"risk_level\": \"CRITICAL\"}",
+  "high_fused": {
+    "fused_prediction": 215,
+    "correction_applied": true,
+    "correction_delta": -8,
+    "correction_reason": "Minor adjustment based on domain knowledge.",
+    "domain_evidence": ["Paper-A, Table 2"],
+    "risk_level": "HIGH",
+    "recommendation": "Monitor temperature closely.",
+    "confidence_score": 0.75
+  }
+}

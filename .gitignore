@@ -1,0 +1,52 @@
+# Environment
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/build/
+!frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+oracle-data/
+
+# Claude / AI tooling
+.claude/
+
+# Personal work instructions (not for public)
+work-instructions-kr.md
+
+# Credentials
+credentials/
+*.pem
+*.key
+*.cert
+
+# Backup
+*.bak
+
+# Logs
+*.log

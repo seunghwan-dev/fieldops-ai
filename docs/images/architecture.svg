@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520">
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .title { font-size: 13px; font-weight: 600; }
+    .sub { font-size: 11px; font-weight: 400; }
+    .label { font-size: 10px; font-weight: 500; fill: #6b7280; }
+  </style>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="#0f172a" rx="12"/>
+
+  <!-- Stage 1: Knowledge Ingestion -->
+  <rect x="160" y="24" width="480" height="72" rx="10" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text class="title" x="400" y="50" text-anchor="middle" fill="#93c5fd">Knowledge ingestion</text>
+  <text class="sub" x="400" y="70" text-anchor="middle" fill="#64748b">PDF → GPT-4o Vision → e5-large embedding → Oracle 26ai</text>
+
+  <!-- Cloud label -->
+  <rect x="670" y="38" width="52" height="22" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="0.5"/>
+  <text class="label" x="696" y="53" text-anchor="middle" fill="#60a5fa">cloud</text>
+
+  <!-- Arrow 1 -->
+  <line x1="400" y1="96" x2="400" y2="130" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Stage 2: Dual-Track Container -->
+  <rect x="60" y="134" width="680" height="210" rx="12" fill="#1a1f2e" stroke="#334155" stroke-width="0.8"/>
+  <text class="title" x="400" y="160" text-anchor="middle" fill="#94a3b8">Dual-track prediction</text>
+
+  <!-- Local label -->
+  <rect x="670" y="146" width="50" height="22" rx="4" fill="#1a2e1a" stroke="#22c55e" stroke-width="0.5"/>
+  <text class="label" x="695" y="161" text-anchor="middle" fill="#4ade80">local</text>
+
+  <!-- Track A -->
+  <rect x="100" y="178" width="260" height="72" rx="8" fill="#0f2b2b" stroke="#14b8a6" stroke-width="1"/>
+  <text class="title" x="230" y="204" text-anchor="middle" fill="#5eead4">Track A: domain RAG</text>
+  <text class="sub" x="230" y="222" text-anchor="middle" fill="#4a7c7c">Vector + BM25 + RRF (k=60)</text>
+
+  <!-- Track B -->
+  <rect x="440" y="178" width="260" height="72" rx="8" fill="#2b1a0f" stroke="#f97316" stroke-width="1"/>
+  <text class="title" x="570" y="204" text-anchor="middle" fill="#fdba74">Track B: ML prediction</text>
+  <text class="sub" x="570" y="222" text-anchor="middle" fill="#7c5a3a">RandomForest + SHAP</text>
+
+  <!-- Arrows from tracks to fusion -->
+  <line x1="280" y1="250" x2="340" y2="278" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="520" y1="250" x2="460" y2="278" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Layer 1: LLM Fusion -->
+  <rect x="200" y="280" width="400" height="40" rx="8" fill="#1e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text class="title" x="400" y="305" text-anchor="middle" fill="#c4b5fd">Layer 1: LLM fusion (Qwen 7B)</text>
+  <text class="label" x="616" y="305" fill="#7c3aed">← flexible</text>
+
+  <!-- Arrow -->
+  <line x1="400" y1="320" x2="400" y2="332" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- Layer 2: Safety -->
+  <rect x="200" y="332" width="400" height="40" rx="8" fill="#2e1a1a" stroke="#ef4444" stroke-width="1"/>
+  <text class="title" x="400" y="357" text-anchor="middle" fill="#fca5a5">Layer 2: rule-based safety</text>
+  <text class="label" x="616" y="357" fill="#dc2626">← non-negotiable</text>
+
+  <!-- Arrow to output -->
+  <line x1="400" y1="372" x2="400" y2="404" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Output -->
+  <rect x="200" y="408" width="400" height="56" rx="10" fill="#0f2b1a" stroke="#22c55e" stroke-width="1"/>
+  <text class="title" x="400" y="432" text-anchor="middle" fill="#86efac">Output</text>
+  <text class="sub" x="400" y="450" text-anchor="middle" fill="#4ade80">requires_human_review: true</text>
+
+  <!-- Bottom tagline -->
+  <text class="sub" x="400" y="494" text-anchor="middle" fill="#475569">Cloud VLM for ingestion accuracy · Local GPU for prediction · $0 API cost</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+</svg>

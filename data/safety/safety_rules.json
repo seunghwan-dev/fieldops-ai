@@ -1,0 +1,32 @@
+{
+  "rules": [
+    {
+      "rule_id": "SAFETY-001",
+      "material": "Material A",
+      "condition": "discharge_temp > 200",
+      "severity": "CRITICAL",
+      "action": "force_correction",
+      "correction_target": 180,
+      "message": "Material A thermal runaway risk above 200°C",
+      "source": "Paper-A, Section 4, p.6"
+    },
+    {
+      "rule_id": "SAFETY-002",
+      "material": "Material A",
+      "condition": "discharge_temp > 180 AND rpm > 90",
+      "severity": "WARNING",
+      "action": "recommend_review",
+      "message": "High RPM + elevated temperature: verify with DSC data",
+      "source": "Paper-A, Table 2"
+    },
+    {
+      "rule_id": "SAFETY-003",
+      "material": "Material G",
+      "condition": "grinding_pressure > 1.0",
+      "severity": "WARNING",
+      "action": "recommend_review",
+      "message": "Excessive grinding pressure may cause amorphization",
+      "source": "Report-B, observation notes"
+    }
+  ]
+}

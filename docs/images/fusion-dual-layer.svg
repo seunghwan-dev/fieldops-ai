@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="240" viewBox="0 0 800 240">
+  <style>text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }</style>
+  <rect width="800" height="240" fill="#0f172a" rx="12"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="28" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="500">FUSION: DUAL-LAYER SAFETY ARCHITECTURE</text>
+
+  <rect x="40" y="56" width="160" height="44" rx="8" fill="#0f2b2b" stroke="#14b8a6" stroke-width="0.8"/>
+  <text x="120" y="74" text-anchor="middle" fill="#5eead4" font-size="11" font-weight="600">Track A: RAG</text>
+  <text x="120" y="90" text-anchor="middle" fill="#4a7c7c" font-size="9">domain knowledge</text>
+
+  <rect x="40" y="116" width="160" height="44" rx="8" fill="#2b1a0f" stroke="#f97316" stroke-width="0.8"/>
+  <text x="120" y="134" text-anchor="middle" fill="#fdba74" font-size="11" font-weight="600">Track B: ML</text>
+  <text x="120" y="150" text-anchor="middle" fill="#7c5a3a" font-size="9">numerical prediction</text>
+
+  <line x1="200" y1="78" x2="260" y2="100" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="200" y1="138" x2="260" y2="116" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="264" y="56" width="300" height="54" rx="10" fill="#1e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="414" y="78" text-anchor="middle" fill="#c4b5fd" font-size="13" font-weight="600">Layer 1: LLM Fusion (Qwen 7B)</text>
+  <text x="414" y="96" text-anchor="middle" fill="#8b7abf" font-size="10">Synthesizes evidence + suggests correction</text>
+
+  <rect x="578" y="68" width="70" height="22" rx="4" fill="#a78bfa20" stroke="#a78bfa" stroke-width="0.5"/>
+  <text x="613" y="83" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="600">FLEXIBLE</text>
+
+  <line x1="414" y1="110" x2="414" y2="126" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="264" y="130" width="300" height="54" rx="10" fill="#2e1a1a" stroke="#ef4444" stroke-width="1"/>
+  <text x="414" y="152" text-anchor="middle" fill="#fca5a5" font-size="13" font-weight="600">Layer 2: Rule-based Safety</text>
+  <text x="414" y="170" text-anchor="middle" fill="#7c4a4a" font-size="10">Hard-coded rules. No exceptions.</text>
+
+  <rect x="578" y="142" width="110" height="22" rx="4" fill="#ef444420" stroke="#ef4444" stroke-width="0.5"/>
+  <text x="633" y="157" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="600">NON-NEGOTIABLE</text>
+
+  <line x1="414" y1="184" x2="414" y2="200" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="314" y="202" width="200" height="28" rx="6" fill="#1a2e1a" stroke="#22c55e" stroke-width="0.8"/>
+  <text x="414" y="220" text-anchor="middle" fill="#86efac" font-size="11" font-weight="600">Safe output → human review</text>
+</svg>
