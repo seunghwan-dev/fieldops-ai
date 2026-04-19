@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/fieldops-ai/',
+  base: process.env.NODE_ENV === 'production' ? '/fieldops-ai/' : '/',
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
