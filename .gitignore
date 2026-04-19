@@ -18,7 +18,6 @@ venv/
 # Node
 node_modules/
 frontend/build/
-!frontend/dist/
 
 # IDE
 .vscode/
