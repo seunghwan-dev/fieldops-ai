@@ -41,7 +41,7 @@ DEMOモード — Docker不要。ML Only ↔ Fusionを切り替えて違いを�
   <img src="docs/images/features.svg" alt="Features" width="100%"/>
 </p>
 
-> 3つのコア機能：Domain-ML Fusionが根拠付きで予測を補正、RAGがナレッジベースから即座に回答、VLMが論文PDFから構造化データを抽出します。
+> コア機能は3つ。Domain-ML Fusionが根拠を示して予測を補正し、RAGがナレッジベースから即座に回答、VLMが論文PDFから構造化データを抽出します。
 
 ---
 
@@ -55,7 +55,7 @@ DEMOモード — Docker不要。ML Only ↔ Fusionを切り替えて違いを�
 | Embedding | multilingual-e5-large（1024次元） | 日英韓の多言語対応 |
 | ML | RandomForest + SHAP | 解釈可能な予測 + XAI |
 | フロントエンド | React 19 + TypeScript + Tailwind | EN/JA二言語UI |
-| Fusion | LLM Layer + Rule-based Safety | 柔軟＋絶対的な二層構造 |
+| Fusion | LLM Layer + Rule-based Safety | 柔軟性と絶対性を両立する二層構造 |
 
 ---
 
@@ -67,7 +67,7 @@ DEMOモード — Docker不要。ML Only ↔ Fusionを切り替えて違いを�
   <img src="docs/images/equipment-a-vs-b.svg" alt="Equipment A vs B" width="100%"/>
 </p>
 
-> 装置Aは物理式が存在しないため、MLが実験報告書から直接学習。装置BにはBond's Lawがあるが、特定RPM帯の外では誤差が出る。その差分をMLが補正します。
+> 装置Aは物理式が存在しないため、MLが実験報告書から直接学習。装置BにはBond's Lawがあるが、特定のRPM範囲外では誤差が出る。その差分をMLが補正します。
 
 ### 2. Fusion：LLMの柔軟性 + Ruleの絶対性
 
@@ -75,17 +75,17 @@ DEMOモード — Docker不要。ML Only ↔ Fusionを切り替えて違いを�
   <img src="docs/images/fusion-dual-layer.svg" alt="Fusion Dual-Layer" width="100%"/>
 </p>
 
-> Layer 1（LLM）は柔軟に根拠を統合し補正を提案。Layer 2（Rule）は絶対的な安全ルールで、すべてに優先します。二層構造で安全性に妥協なし。
+> Layer 1（LLM）は柔軟に根拠を統合し補正を提案。Layer 2（Rule）はハードコードされた安全ルールで、他のすべての判断に優先します。二層構造で安全性に妥協なし。
 
 ### 3. MDSK-RAG Dual-Source Collection
 
-[MDSK-RAGパターン（ACS JCIM）](https://pubs.acs.org/doi/10.1021/acs.jcim.5c01941)を参考に、ナレッジを2つのテーブルに物理分離しています。
+[MDSK-RAGパターン（ACS JCIM）](https://pubs.acs.org/doi/10.1021/acs.jcim.5c01941)を参考に、ナレッジを2つのテーブルに物理的に分離しています。
 
 <p align="center">
   <img src="docs/images/mdsk-rag.svg" alt="MDSK-RAG Dual-Source" width="100%"/>
 </p>
 
-> 単一テーブルではテキスト知識と数値データが混在し、検索精度が低下。文献と定量データを物理的に分離し、それぞれに最適なインデックスを構築。実運用では同じパターンで機密データと公開データの分離にも活用できます。
+> 単一テーブルではテキスト知識と数値データが混在し、検索精度が低下。文献と定量データを物理的に分離し、それぞれに最適なインデックスを構築。実運用では、同じパターンを機密データと公開データの分離にも応用できます。
 
 ### 4. データ主権 — 外部API費用 $0のローカルAI
 
@@ -93,7 +93,7 @@ DEMOモード — Docker不要。ML Only ↔ Fusionを切り替えて違いを�
   <img src="docs/images/data-sovereignty.svg" alt="Data Sovereignty" width="100%"/>
 </p>
 
-> すべてのAIコンポーネントはローカルで稼働。唯一のクラウドサービス（VLM）は公開論文のみを処理し、顧客データには一切触れません。ローカルモデルに置換すれば完全ローカル運用も可能です。
+> すべてのAIコンポーネントはローカルで稼働。唯一のクラウドサービス（VLM）は公開論文のみを処理し、顧客データには一切触れません。ローカルモデルに置き換えれば完全ローカル運用も可能です。
 
 ---
 
