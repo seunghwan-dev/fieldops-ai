@@ -6,8 +6,6 @@
 ![React](https://img.shields.io/badge/React-19-61DAFB)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
 ![Oracle](https://img.shields.io/badge/Oracle-26ai-F80000)
-![Tests](https://img.shields.io/badge/Tests-50%20passed-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ### [▶ Live Demo (GitHub Pages)](https://seunghwan-dev.github.io/fieldops-ai/)
 
@@ -49,7 +47,7 @@ DEMO mode — no Docker required. Toggle ML Only ↔ Fusion to see the differenc
 
 | Component | Technology | Why |
 |-----------|-----------|-----|
-| LLM | Qwen 2.5 7B (Ollama, local) | $0 cost, data sovereignty |
+| LLM | Qwen 2.5 7B (Ollama, local) | no external API calls, data sovereignty |
 | VLM | GPT-4o Vision (Azure OpenAI) | Best table/figure extraction accuracy |
 | Database | Oracle AI Database 26ai | Vector + BM25 hybrid in single DB |
 | Embedding | multilingual-e5-large (1024d) | JP/EN/KR multilingual support |
@@ -87,54 +85,19 @@ Based on the [MDSK-RAG pattern (ACS JCIM)](https://pubs.acs.org/doi/10.1021/acs.
 
 > A single table mixes text knowledge with numerical data, degrading search precision. Two separate tables — literature and quantitative — allow optimized indexes for each. In production, the same pattern separates confidential from public data.
 
-### 4. Data Sovereignty — $0 Local AI
+### 4. Hybrid Chunking with MDSK-RAG Routing
 
-<p align="center">
-  <img src="docs/images/data-sovereignty.svg" alt="Data Sovereignty" width="100%"/>
-</p>
+PDF content is split by **content type** rather than fixed token windows:
 
-> All AI components run on local hardware. The only cloud service (VLM) processes published papers — never customer data. Replaceable with a local model for fully local operation.
+- **Text** — Paragraph-boundary splits, soft cap 400 tokens (~1,600 chars), no overlap. Section headings preserved as `section_title` metadata.
+- **Tables** — Row-level chunks (header + one data row per chunk), formatted as `Table {id} | Header1: Value1 | Header2: Value2 | ...`. Each row is independently retrievable.
+- **Figures** — One chunk per figure, combining VLM-generated `semantic_summary` and `key_data_points`. Figure caption stored in `section_title`.
 
----
+Chunks are routed by type into **two physically separated Oracle tables** (MDSK-RAG):
 
-## Testing
+| chunk_type | Table | Purpose |
+|------------|-------|---------|
+| `text`, `figure` | `LITERATURE_CHUNKS` | Narrative / explanatory retrieval |
+| `table_row` | `QUANTITATIVE_CHUNKS` | Numeric / threshold lookups |
 
-```bash
-docker exec -it fieldops-ai-backend-1 pytest tests/ -v --tb=short
-```
-
-| Category | Count | Strategy | Speed |
-|---------|-------|---------|-------|
-| A. Core API | 20 | VLM/LLM mocked, DB/ML real | ~10s |
-| B. Integration | 10 | All services real (Docker required) | ~60s |
-| C. Edge Cases | 10 | LLM failure injection (timeout, Chinese, invalid JSON) | ~15s |
-| D. Equipment Physics | 10 | Bond's Law hybrid validation + SHAP + safety structure | ~5s |
-| **Total** | **50** | | |
-
----
-
-## Hardware
-
-<p align="center">
-  <img src="docs/images/hardware.svg" alt="Hardware" width="100%"/>
-</p>
-
----
-
-## Quick Start
-
-```bash
-git clone https://github.com/seunghwan-dev/fieldops-ai.git
-cd fieldops-ai
-cp .env.example .env
-docker compose up -d
-cd frontend && npm install && npm run dev
-```
-
-DEMO mode auto-activates when Docker is down.
-
----
-
-## License
-
-MIT
+Qualitative queries target the literature table; numeric-condition queries (e.g., "discharge temp > 200°C") target the quantitative table. Both feed the hybrid (vector + BM25 + RRF) pipeline.

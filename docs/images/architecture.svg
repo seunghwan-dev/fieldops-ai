@@ -1,76 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520">
-  <style>
-    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    .title { font-size: 13px; font-weight: 600; }
-    .sub { font-size: 11px; font-weight: 400; }
-    .label { font-size: 10px; font-weight: 500; fill: #6b7280; }
-  </style>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="540" viewBox="0 0 800 540">
+  <style>text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }</style>
+  <rect width="800" height="540" fill="#0f172a" rx="12"/>
 
-  <!-- Background -->
-  <rect width="800" height="520" fill="#0f172a" rx="12"/>
-
-  <!-- Stage 1: Knowledge Ingestion -->
-  <rect x="160" y="24" width="480" height="72" rx="10" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
-  <text class="title" x="400" y="50" text-anchor="middle" fill="#93c5fd">Knowledge ingestion</text>
-  <text class="sub" x="400" y="70" text-anchor="middle" fill="#64748b">PDF → GPT-4o Vision → e5-large embedding → Oracle 26ai</text>
-
-  <!-- Cloud label -->
-  <rect x="670" y="38" width="52" height="22" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="0.5"/>
-  <text class="label" x="696" y="53" text-anchor="middle" fill="#60a5fa">cloud</text>
-
-  <!-- Arrow 1 -->
-  <line x1="400" y1="96" x2="400" y2="130" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
-
-  <!-- Stage 2: Dual-Track Container -->
-  <rect x="60" y="134" width="680" height="210" rx="12" fill="#1a1f2e" stroke="#334155" stroke-width="0.8"/>
-  <text class="title" x="400" y="160" text-anchor="middle" fill="#94a3b8">Dual-track prediction</text>
-
-  <!-- Local label -->
-  <rect x="670" y="146" width="50" height="22" rx="4" fill="#1a2e1a" stroke="#22c55e" stroke-width="0.5"/>
-  <text class="label" x="695" y="161" text-anchor="middle" fill="#4ade80">local</text>
-
-  <!-- Track A -->
-  <rect x="100" y="178" width="260" height="72" rx="8" fill="#0f2b2b" stroke="#14b8a6" stroke-width="1"/>
-  <text class="title" x="230" y="204" text-anchor="middle" fill="#5eead4">Track A: domain RAG</text>
-  <text class="sub" x="230" y="222" text-anchor="middle" fill="#4a7c7c">Vector + BM25 + RRF (k=60)</text>
-
-  <!-- Track B -->
-  <rect x="440" y="178" width="260" height="72" rx="8" fill="#2b1a0f" stroke="#f97316" stroke-width="1"/>
-  <text class="title" x="570" y="204" text-anchor="middle" fill="#fdba74">Track B: ML prediction</text>
-  <text class="sub" x="570" y="222" text-anchor="middle" fill="#7c5a3a">RandomForest + SHAP</text>
-
-  <!-- Arrows from tracks to fusion -->
-  <line x1="280" y1="250" x2="340" y2="278" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="520" y1="250" x2="460" y2="278" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
-
-  <!-- Layer 1: LLM Fusion -->
-  <rect x="200" y="280" width="400" height="40" rx="8" fill="#1e1a2e" stroke="#a78bfa" stroke-width="1"/>
-  <text class="title" x="400" y="305" text-anchor="middle" fill="#c4b5fd">Layer 1: LLM fusion (Qwen 7B)</text>
-  <text class="label" x="616" y="305" fill="#7c3aed">← flexible</text>
-
-  <!-- Arrow -->
-  <line x1="400" y1="320" x2="400" y2="332" stroke="#475569" stroke-width="1.5"/>
-
-  <!-- Layer 2: Safety -->
-  <rect x="200" y="332" width="400" height="40" rx="8" fill="#2e1a1a" stroke="#ef4444" stroke-width="1"/>
-  <text class="title" x="400" y="357" text-anchor="middle" fill="#fca5a5">Layer 2: rule-based safety</text>
-  <text class="label" x="616" y="357" fill="#dc2626">← non-negotiable</text>
-
-  <!-- Arrow to output -->
-  <line x1="400" y1="372" x2="400" y2="404" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
-
-  <!-- Output -->
-  <rect x="200" y="408" width="400" height="56" rx="10" fill="#0f2b1a" stroke="#22c55e" stroke-width="1"/>
-  <text class="title" x="400" y="432" text-anchor="middle" fill="#86efac">Output</text>
-  <text class="sub" x="400" y="450" text-anchor="middle" fill="#4ade80">requires_human_review: true</text>
-
-  <!-- Bottom tagline -->
-  <text class="sub" x="400" y="494" text-anchor="middle" fill="#475569">Cloud VLM for ingestion accuracy · Local GPU for prediction · $0 API cost</text>
-
-  <!-- Arrow marker -->
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
   </defs>
+
+  <text x="400" y="28" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="500">FIELDOPS-AI INFRASTRUCTURE</text>
+
+  <rect x="30" y="50" width="180" height="260" rx="12" fill="none" stroke="#3b82f6" stroke-width="1" stroke-dasharray="5 3"/>
+  <text x="50" y="72" fill="#60a5fa" font-size="11" font-weight="600">CLOUD (Azure)</text>
+
+  <rect x="50" y="95" width="140" height="65" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="120" y="118" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="600">GPT-4o Vision</text>
+  <text x="120" y="135" text-anchor="middle" fill="#60a5fa" font-size="10">VLM · Azure OpenAI</text>
+  <text x="120" y="151" text-anchor="middle" fill="#475569" font-size="9">PDF ingestion only</text>
+
+  <text x="120" y="180" text-anchor="middle" fill="#64748b" font-size="9">Public papers only</text>
+  <text x="120" y="194" text-anchor="middle" fill="#64748b" font-size="9">No customer data</text>
+
+  <g transform="translate(70, 230)">
+    <rect x="8" y="8" width="36" height="44" rx="2" fill="#1e3a5f" stroke="#60a5fa" stroke-width="0.8"/>
+    <rect x="4" y="4" width="36" height="44" rx="2" fill="#1e3a5f" stroke="#60a5fa" stroke-width="0.8"/>
+    <rect x="0" y="0" width="36" height="44" rx="2" fill="#1e3a5f" stroke="#93c5fd" stroke-width="1"/>
+    <line x1="6" y1="10" x2="30" y2="10" stroke="#93c5fd" stroke-width="0.8"/>
+    <line x1="6" y1="16" x2="30" y2="16" stroke="#93c5fd" stroke-width="0.8"/>
+    <line x1="6" y1="22" x2="22" y2="22" stroke="#93c5fd" stroke-width="0.8"/>
+    <line x1="6" y1="32" x2="30" y2="32" stroke="#60a5fa" stroke-width="0.8"/>
+    <line x1="6" y1="38" x2="26" y2="38" stroke="#60a5fa" stroke-width="0.8"/>
+  </g>
+  <text x="135" y="252" fill="#93c5fd" font-size="11" font-weight="600">PDF Papers</text>
+  <text x="135" y="268" fill="#64748b" font-size="9">Research / Reports</text>
+  <text x="135" y="282" fill="#64748b" font-size="9">User upload</text>
+
+  <line x1="120" y1="225" x2="120" y2="165" stroke="#475569" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr5)"/>
+
+  <rect x="240" y="50" width="540" height="430" rx="12" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="5 3"/>
+  <text x="260" y="72" fill="#22d3ee" font-size="11" font-weight="600">DOCKER COMPOSE</text>
+
+  <rect x="260" y="90" width="500" height="50" rx="8" fill="#3a0a0a" stroke="#dc2626" stroke-width="1"/>
+  <text x="510" y="113" text-anchor="middle" fill="#fca5a5" font-size="12" font-weight="600">Oracle AI Database 26ai</text>
+  <text x="510" y="129" text-anchor="middle" fill="#94a3b8" font-size="9">HNSW Vector Index + BM25 · LITERATURE / QUANTITATIVE</text>
+
+  <rect x="260" y="155" width="160" height="100" rx="8" fill="#1e1a3a" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="340" y="178" text-anchor="middle" fill="#c4b5fd" font-size="12" font-weight="600">Embedding</text>
+  <line x1="280" y1="186" x2="400" y2="186" stroke="#3a2e6a" stroke-width="0.5"/>
+  <text x="340" y="208" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="600">e5-large</text>
+  <text x="340" y="226" text-anchor="middle" fill="#7c6ab0" font-size="10">multilingual · 1024d</text>
+  <text x="340" y="242" text-anchor="middle" fill="#7c6ab0" font-size="10">GPU</text>
+
+  <rect x="260" y="275" width="160" height="120" rx="8" fill="#0f2b1a" stroke="#22c55e" stroke-width="1"/>
+  <text x="340" y="298" text-anchor="middle" fill="#86efac" font-size="13" font-weight="700">Ollama</text>
+  <line x1="280" y1="306" x2="400" y2="306" stroke="#1a4a2a" stroke-width="0.5"/>
+  <text x="340" y="326" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">Qwen 7B</text>
+  <text x="340" y="346" text-anchor="middle" fill="#4a7c5a" font-size="10">RTX 4070 SUPER 12GB</text>
+  <text x="340" y="364" text-anchor="middle" fill="#4a7c5a" font-size="10">~4.5GB VRAM</text>
+  <text x="340" y="382" text-anchor="middle" fill="#475569" font-size="9">GPU passthrough</text>
+
+  <rect x="440" y="155" width="320" height="240" rx="8" fill="#2a1f0a" stroke="#f59e0b" stroke-width="1"/>
+  <text x="600" y="178" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="600">Backend (FastAPI)</text>
+
+  <rect x="458" y="192" width="135" height="60" rx="6" fill="#0f2b2b" stroke="#14b8a6" stroke-width="1"/>
+  <text x="525" y="214" text-anchor="middle" fill="#5eead4" font-size="11" font-weight="600">Track A: RAG</text>
+  <text x="525" y="230" text-anchor="middle" fill="#4a7c7c" font-size="9">HNSW + BM25</text>
+  <text x="525" y="244" text-anchor="middle" fill="#4a7c7c" font-size="9">+ RRF (k=60)</text>
+
+  <rect x="607" y="192" width="135" height="60" rx="6" fill="#2b1a0f" stroke="#f97316" stroke-width="1"/>
+  <text x="674" y="214" text-anchor="middle" fill="#fdba74" font-size="11" font-weight="600">Track B: ML</text>
+  <text x="674" y="230" text-anchor="middle" fill="#7c5a3a" font-size="9">RandomForest</text>
+  <text x="674" y="244" text-anchor="middle" fill="#7c5a3a" font-size="9">+ SHAP</text>
+
+  <rect x="458" y="265" width="284" height="32" rx="6" fill="#1e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="600" y="285" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="600">Layer 1: LLM Fusion</text>
+
+  <rect x="458" y="306" width="284" height="32" rx="6" fill="#2e1a1a" stroke="#ef4444" stroke-width="1"/>
+  <text x="600" y="326" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="600">Layer 2: Rule-based Safety</text>
+
+  <text x="600" y="362" text-anchor="middle" fill="#94a3b8" font-size="10">↓ assembles final response</text>
+  <text x="600" y="380" text-anchor="middle" fill="#475569" font-size="9">predict() — fusion_service.py</text>
+
+  <line x1="190" y1="115" x2="260" y2="115" stroke="#475569" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr5)"/>
+  <text x="225" y="108" text-anchor="middle" fill="#64748b" font-size="9">Page images</text>
+
+  <line x1="458" y1="222" x2="420" y2="205" stroke="#475569" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr5)"/>
+  <text x="438" y="200" text-anchor="middle" fill="#64748b" font-size="9">embed</text>
+
+  <line x1="458" y1="282" x2="420" y2="320" stroke="#475569" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr5)"/>
+  <text x="438" y="298" text-anchor="middle" fill="#64748b" font-size="9">prompt</text>
+
+  <rect x="260" y="430" width="500" height="40" rx="8" fill="#0f2b1a" stroke="#22c55e" stroke-width="1"/>
+  <text x="510" y="455" text-anchor="middle" fill="#86efac" font-size="12" font-weight="600">Output: requires_human_review = true</text>
+  <line x1="600" y1="395" x2="600" y2="428" stroke="#475569" stroke-width="1" marker-end="url(#arr5)"/>
+
+  <text x="400" y="510" text-anchor="middle" fill="#475569" font-size="10">All Docker services connected via internal DNS</text>
 </svg>

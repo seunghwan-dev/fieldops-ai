@@ -6,8 +6,6 @@
 ![React](https://img.shields.io/badge/React-19-61DAFB)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
 ![Oracle](https://img.shields.io/badge/Oracle-26ai-F80000)
-![Tests](https://img.shields.io/badge/Tests-50%20passed-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ### [▶ ライブデモ（GitHub Pages）](https://seunghwan-dev.github.io/fieldops-ai/)
 
@@ -49,7 +47,7 @@ DEMOモード — Docker不要。ML Only ↔ Fusionを切り替えて違いを�
 
 | コンポーネント | 技術 | 選定理由 |
 |---------------|------|----------|
-| LLM | Qwen 2.5 7B（Ollama、ローカル） | コスト$0、データ主権 |
+| LLM | Qwen 2.5 7B（Ollama、ローカル） | 外部API呼び出しなし、データ主権 |
 | VLM | GPT-4o Vision（Azure OpenAI） | テーブル・図の抽出精度が最高 |
 | データベース | Oracle AI Database 26ai | Vector + BM25ハイブリッドを単一DBで実現 |
 | Embedding | multilingual-e5-large（1024次元） | 日英韓の多言語対応 |
@@ -87,54 +85,19 @@ DEMOモード — Docker不要。ML Only ↔ Fusionを切り替えて違いを�
 
 > 単一テーブルではテキスト知識と数値データが混在し、検索精度が低下。文献と定量データを物理的に分離し、それぞれに最適なインデックスを構築。実運用では、同じパターンを機密データと公開データの分離にも応用できます。
 
-### 4. データ主権 — 外部API費用 $0のローカルAI
+### 4. ハイブリッド・チャンキングと MDSK-RAG ルーティング
 
-<p align="center">
-  <img src="docs/images/data-sovereignty.svg" alt="Data Sovereignty" width="100%"/>
-</p>
+PDF コンテンツは固定長ではなく **コンテンツ種別ごと** に分割する：
 
-> すべてのAIコンポーネントはローカルで稼働。唯一のクラウドサービス（VLM）は公開論文のみを処理し、顧客データには一切触れません。ローカルモデルに置き換えれば完全ローカル運用も可能です。
+- **テキスト** — 段落境界で分割、上限 400 トークン（約 1,600 文字）、オーバーラップなし。見出しは `section_title` メタデータに保持。
+- **表** — 行レベルで分割（ヘッダ + データ1行 = 1チャンク）、`Table {id} | Header1: Value1 | Header2: Value2 | ...` 形式。各行が独立して検索可能。
+- **図** — VLM 生成の `semantic_summary` と `key_data_points` を結合して 1チャンク。図キャプションは `section_title` に格納。
 
----
+チャンクは種別により **2 つの Oracle テーブルに物理分離** される（MDSK-RAG）：
 
-## テスト
+| chunk_type | テーブル | 用途 |
+|------------|---------|------|
+| `text`, `figure` | `LITERATURE_CHUNKS` | 説明的・概念的な検索 |
+| `table_row` | `QUANTITATIVE_CHUNKS` | 数値・閾値検索 |
 
-```bash
-docker exec -it fieldops-ai-backend-1 pytest tests/ -v --tb=short
-```
-
-| カテゴリ | 件数 | 戦略 | 速度 |
-|---------|------|------|------|
-| A. Core API | 20 | VLM/LLMモック、DB/MLは実環境 | ~10秒 |
-| B. Integration | 10 | 全サービス実環境（Docker必須） | ~60秒 |
-| C. Edge Cases | 10 | LLM障害注入（タイムアウト、中国語、不正JSON） | ~15秒 |
-| D. Equipment Physics | 10 | Bond's Lawハイブリッド検証 + SHAP + 安全構造 | ~5秒 |
-| **合計** | **50** | | |
-
----
-
-## ハードウェア
-
-<p align="center">
-  <img src="docs/images/hardware.svg" alt="Hardware" width="100%"/>
-</p>
-
----
-
-## クイックスタート
-
-```bash
-git clone https://github.com/seunghwan-dev/fieldops-ai.git
-cd fieldops-ai
-cp .env.example .env
-docker compose up -d
-cd frontend && npm install && npm run dev
-```
-
-Dockerが停止していると、DEMOモードが自動で有効になります。
-
----
-
-## ライセンス
-
-MIT
+定性的な質問は文献テーブルへ、数値条件の質問（例：「discharge temp > 200°C」）は定量テーブルへとベクトル検索が向かう。両者はハイブリッド検索（vector + BM25 + RRF）パイプラインに統合される。
