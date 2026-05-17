@@ -66,7 +66,6 @@ export default function MLPanel({ prediction, shap, material, classifierRpm }: P
     : prediction.d50_micron;
   const unit = isMixer ? '°C' : 'μm';
 
-  // Physics accuracy for Equipment B
   const showPhysics = !isMixer && prediction.physics_only_d50 != null && prediction.ml_correction != null;
   let accuracy: PhysicsAccuracy | null = null;
 
@@ -81,7 +80,6 @@ export default function MLPanel({ prediction, shap, material, classifierRpm }: P
     );
   }
 
-  // Build physics accuracy message from i18n template
   const getPhysicsMessage = (acc: PhysicsAccuracy, rpm: number): string => {
     const templateKey = acc.level === 'HIGH' ? 'physicsHigh'
       : acc.level === 'MODERATE' ? 'physicsModerate' : 'physicsLow';
@@ -125,7 +123,6 @@ export default function MLPanel({ prediction, shap, material, classifierRpm }: P
         </div>
       )}
 
-      {/* Physics Accuracy visualization (Equipment B only) */}
       {accuracy && (
         <div className={`mt-3 p-3 rounded-lg border ${accuracy.bgColor} ${accuracy.borderColor}`}>
           <div className="flex items-center gap-2 mb-2">
@@ -140,7 +137,6 @@ export default function MLPanel({ prediction, shap, material, classifierRpm }: P
           <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
             {getPhysicsMessage(accuracy, classifierRpm || 8000)}
           </p>
-          {/* Correction ratio bar */}
           <div className="flex items-center gap-2">
             <div className="flex-1 h-2 bg-blue-200 dark:bg-blue-900 rounded-full overflow-hidden">
               <div

@@ -164,21 +164,18 @@ def chunk_pages(pages: list[VLMPageResult], doc_id: str) -> list[dict]:
     seq = 0
 
     for page in pages:
-        # Chunk text content
         if page.text_content.strip():
             text_chunks, seq = _chunk_text(
                 page.text_content, doc_id, page.page_number, seq
             )
             all_chunks.extend(text_chunks)
 
-        # Chunk tables (row-level)
         for table in page.tables:
             table_chunks, seq = _chunk_table(
                 table, doc_id, page.page_number, seq
             )
             all_chunks.extend(table_chunks)
 
-        # Chunk figures (summary)
         for figure in page.figures:
             figure_chunks, seq = _chunk_figure(
                 figure, doc_id, page.page_number, seq

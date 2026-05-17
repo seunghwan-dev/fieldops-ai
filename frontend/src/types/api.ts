@@ -1,4 +1,3 @@
-// ===== Knowledge Ingest (Phase 1 API) =====
 export interface IngestResponse {
   doc_id: string;
   doc_title: string;
@@ -22,7 +21,6 @@ export interface IngestResponse {
   }>;
 }
 
-// ===== Search (Phase 2 API) =====
 export interface SearchResult {
   chunk_id: string;
   chunk_type: string;

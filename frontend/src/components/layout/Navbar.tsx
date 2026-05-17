@@ -51,7 +51,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Language toggle */}
           <button
             onClick={() => setLanguage(language === 'en' ? 'ja' : 'en')}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
@@ -62,7 +61,6 @@ export default function Navbar() {
             <span>{language === 'en' ? 'EN' : 'JA'}</span>
           </button>
 
-          {/* LIVE/DEMO badge */}
           <span
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
               isDemo

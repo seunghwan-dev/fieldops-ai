@@ -207,7 +207,6 @@ async def _llm_fusion(track_a: dict, track_b: dict, material: str, conditions: d
             cleaned = _strip_markdown_fences(raw)
             result = json.loads(cleaned)
 
-            # Validate required keys
             _ = result["fused_prediction"]
             result["fusion_method"] = "llm_fusion"
             logger.info(f"LLM fusion succeeded (attempt {attempt + 1})")
@@ -245,7 +244,6 @@ async def predict(request) -> dict:
     conditions = request.conditions
     eq_type = _equipment_type(material)
 
-    # --- ml_only mode ---
     if request.mode == "ml_only":
         track_b = await _run_track_b(material, conditions)
         elapsed = (time.time() - total_start) * 1000
@@ -265,15 +263,11 @@ async def predict(request) -> dict:
             },
         }
 
-    # --- fusion mode ---
-
-    # Step 1: Parallel Track A + Track B
     track_a, track_b = await asyncio.gather(
         _run_track_a(material, conditions),
         _run_track_b(material, conditions),
     )
 
-    # Step 2: Layer 1 — LLM Fusion
     fusion_start = time.time()
     fusion_result = await _llm_fusion(track_a, track_b, material, conditions)
     fusion_time = (time.time() - fusion_start) * 1000
@@ -286,7 +280,6 @@ async def predict(request) -> dict:
         conditions=conditions,
     )
 
-    # Step 4: Assemble response
     total_time = (time.time() - total_start) * 1000
 
     return {

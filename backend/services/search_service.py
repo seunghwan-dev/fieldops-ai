@@ -76,25 +76,20 @@ async def hybrid_search(
     """
     start_ms = time.time()
 
-    # 1. Query embedding (e5-large with "query: " prefix)
     query_vector = await embed_query(query)
 
-    # 2. Parallel search
     vec_results, bm25_results = await asyncio.gather(
         vector_search(query_vector, max_results * 2),
         bm25_search(query, max_results * 2),
     )
 
-    # 3. RRF combination
     combined = reciprocal_rank_fusion(vec_results, bm25_results, k=60)
 
     # 4. Threshold filter
     filtered = [r for r in combined if r.similarity >= threshold]
 
-    # 5. Top N
     top_results = filtered[:max_results]
 
-    # 6. LLM answer generation (skip if no results)
     answer = ""
     sources: list[str] = []
     if top_results:

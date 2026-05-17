@@ -28,10 +28,10 @@ class FusionRequest(BaseModel):
 
 class FusionResponse(BaseModel):
     mode: str
-    prediction: dict                           # ML original -- immutable
+    prediction: dict
     shap: dict                                 # SHAP original -- immutable
-    domain_knowledge: Optional[dict] = None    # null for ml_only
-    fusion: Optional[dict] = None              # null for ml_only
+    domain_knowledge: Optional[dict] = None
+    fusion: Optional[dict] = None
     safety_overrides: list = []                # empty for ml_only
     requires_human_review: bool = True         # always True
     meta: dict = {}

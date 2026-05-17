@@ -3,8 +3,6 @@
 
 import type { IngestResponse, SearchResponse, FusionResponse } from '../types/api';
 
-// ===== Knowledge Ingest — 3 sample documents =====
-
 export const mockIngestResponse: IngestResponse = {
   doc_id: 'paper-a-material-x-thermal-stability',
   doc_title: 'Thermal Stability Analysis of Material X in High-Shear Mixing Processes',
@@ -95,8 +93,6 @@ export const mockKnowledgeResults: Record<string, IngestResponse> = {
     ],
   },
 };
-
-// ===== Search — 3 query-specific responses =====
 
 export const mockSearchResults: Record<string, SearchResponse> = {
   'Material X safe temperature': {

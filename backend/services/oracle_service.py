@@ -109,17 +109,16 @@ async def insert_chunks(chunks: list[dict]) -> int:
 
     pool = await _get_pool()
     async with pool.acquire() as conn:
-        # Insert literature chunks (text, figure)
         if lit_chunks:
             async with conn.cursor() as cursor:
                 cursor.setinputsizes(
-                    None,  # chunk_id
-                    None,  # doc_id
-                    None,  # chunk_type
-                    oracledb.DB_TYPE_CLOB,  # chunk_text
-                    None,  # page_number
-                    None,  # section_title
-                    oracledb.DB_TYPE_VECTOR,  # embedding
+                    None,
+                    None,
+                    None,
+                    oracledb.DB_TYPE_CLOB,
+                    None,
+                    None,
+                    oracledb.DB_TYPE_VECTOR,
                 )
                 rows = []
                 for c in lit_chunks:
@@ -143,17 +142,16 @@ async def insert_chunks(chunks: list[dict]) -> int:
                     rows,
                 )
 
-        # Insert quantitative chunks (table_row)
         if quant_chunks:
             async with conn.cursor() as cursor:
                 cursor.setinputsizes(
-                    None,  # chunk_id
-                    None,  # doc_id
-                    None,  # chunk_type
-                    oracledb.DB_TYPE_CLOB,  # chunk_text
-                    None,  # page_number
-                    None,  # table_id
-                    oracledb.DB_TYPE_VECTOR,  # embedding
+                    None,
+                    None,
+                    None,
+                    oracledb.DB_TYPE_CLOB,
+                    None,
+                    None,
+                    oracledb.DB_TYPE_VECTOR,
                 )
                 rows = []
                 for c in quant_chunks:

@@ -1,0 +1,12 @@
+# Enforce LF line endings repository-wide regardless of core.autocrlf
+* text=auto eol=lf
+
+# Binary files (no text normalization)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.pkl binary
+*.joblib binary

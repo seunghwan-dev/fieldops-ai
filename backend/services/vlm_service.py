@@ -22,7 +22,6 @@ from schemas.knowledge import VLMPageResult
 
 logger = logging.getLogger(__name__)
 
-# --- Azure OpenAI config ---
 AZURE_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT", "")
 AZURE_API_KEY = os.getenv("AZURE_OPENAI_API_KEY", "")
 AZURE_DEPLOYMENT = os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-4o")
@@ -112,7 +111,6 @@ async def _call_vlm_for_page(
             elapsed = time.time() - start
             raw = response.choices[0].message.content.strip()
 
-            # Strip markdown code fences if present
             if raw.startswith("```"):
                 raw = raw.split("\n", 1)[1] if "\n" in raw else raw[3:]
             if raw.endswith("```"):

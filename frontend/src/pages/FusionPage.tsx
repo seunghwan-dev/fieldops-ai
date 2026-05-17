@@ -47,7 +47,6 @@ export default function FusionPage() {
 
       <InputForm onPredict={handlePredict} loading={loading} />
 
-      {/* Mode toggle */}
       <div className="flex items-center justify-center gap-4 my-6">
         <span
           className={`text-sm font-medium ${

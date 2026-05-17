@@ -181,20 +181,17 @@ class TestDemoPipeline:
 
         INTERVIEW: "This test runs the entire 5-min demo in one go."
         """
-        # Stage 1: Ingest
         with open(sample_pdf_path, "rb") as f:
             assert test_client.post(
                 "/api/v1/knowledge/ingest",
                 files={"file": ("paper_a.pdf", f, "application/pdf")}
             ).status_code == 200
 
-        # Stage 2: Search
         assert test_client.get(
             "/api/v1/knowledge/search",
             params={"q": "Material X safe temperature"}
         ).status_code == 200
 
-        # Stage 3: Fusion
         assert test_client.post(
             "/api/v1/fusion/predict",
             json={**scenario2_input, "mode": "fusion"}

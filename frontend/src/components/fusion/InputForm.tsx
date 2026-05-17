@@ -197,14 +197,12 @@ export default function InputForm({ onPredict, loading }: Props) {
   const sliderRanges = SLIDER_RANGES[equipment];
   const fusionT = t.fusion;
 
-  // Resolve label from i18n key
   const getLabel = (key: string): string => {
     return (fusionT as Record<string, string>)[key] || key;
   };
 
   return (
     <div className="mt-4">
-      {/* Quick presets */}
       <div className="flex items-center gap-2 mb-3">
         <span className="text-xs text-gray-500 dark:text-gray-400">{fusionT.quickScenario}:</span>
         {PRESETS[equipment].map((p) => {
@@ -226,7 +224,6 @@ export default function InputForm({ onPredict, loading }: Props) {
         onSubmit={handleSubmit}
         className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5"
       >
-        {/* Row 1: Equipment + Material dropdowns */}
         <div className="grid grid-cols-2 gap-4 mb-5">
           <div>
             <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
@@ -257,7 +254,6 @@ export default function InputForm({ onPredict, loading }: Props) {
           </div>
         </div>
 
-        {/* Sliders */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
           {Object.entries(sliderRanges).map(([key, config]) => (
             <SliderField
@@ -269,7 +265,6 @@ export default function InputForm({ onPredict, loading }: Props) {
             />
           ))}
 
-          {/* Blade type dropdown (Equipment A only) */}
           {equipment === 'Equipment A' && (
             <div>
               <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
@@ -288,7 +283,6 @@ export default function InputForm({ onPredict, loading }: Props) {
           )}
         </div>
 
-        {/* Submit */}
         <div className="mt-5 flex justify-end">
           <button
             type="submit"

@@ -30,7 +30,7 @@ class GrinderConditions(BaseModel):
 
 class PredictRequest(BaseModel):
     material: str
-    equipment_type: str          # "mixer" | "grinder"
+    equipment_type: str
     conditions: dict             # MixerConditions or GrinderConditions
 
 

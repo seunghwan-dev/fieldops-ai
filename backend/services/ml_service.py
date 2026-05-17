@@ -171,7 +171,6 @@ async def predict_grinder(conditions: dict) -> dict:
     # Step 1: Physics prediction (Bond's Law)
     d50_physics = _bonds_law_prediction(conditions)
 
-    # Step 2: ML error prediction
     features = [
         conditions["feed_rate_kg_h"],
         conditions["grinding_pressure_mpa"],
@@ -187,7 +186,6 @@ async def predict_grinder(conditions: dict) -> dict:
     # RISK: Clamp should rarely trigger with calibrated K. If it does, data quality issue.
     d50_final = max(d50_physics + error_prediction, 0.01)
 
-    # Step 4: SHAP on error model
     shap_values = EXPLAINER_B.shap_values(feature_array)
     feature_names = ["feed_rate", "grinding_pressure", "classifier_rpm", "air_flow", "bulk_density"]
     top_factors = build_shap_factors(feature_names, features, shap_values[0])

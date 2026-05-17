@@ -50,3 +50,6 @@ credentials/
 # Logs
 *.log
 notes/
+
+# HQ2 audit / temp reports
+*_report.txt

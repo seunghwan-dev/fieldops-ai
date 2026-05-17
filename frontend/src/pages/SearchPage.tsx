@@ -33,7 +33,6 @@ export default function SearchPage() {
 
       <SearchBar onSearch={search} loading={loading} />
 
-      {/* Quick examples */}
       <div className="mt-3 flex items-center gap-2 flex-wrap">
         <span className="text-xs text-gray-500 dark:text-gray-400">{t.search.examples}</span>
         {SEARCH_EXAMPLES.map((ex) => (

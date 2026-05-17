@@ -128,7 +128,6 @@ class SafetyService:
              Only supports '>' and '<' operators with AND conjunction.
         INTERVIEW: "No eval(). String parsing only. Security over cleverness."
         """
-        # Split on AND
         parts = [p.strip() for p in condition_str.split("AND")]
 
         for part in parts:

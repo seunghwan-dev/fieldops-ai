@@ -70,7 +70,6 @@ async def ingest_pdf(file: UploadFile = File(...)):
     WHY: Single API call for complete document ingestion.
     RISK: ~30s per page. 6-page PDF = ~3 min. Client must set adequate timeout.
     """
-    # Validate file type
     if not file.filename or not file.filename.lower().endswith(".pdf"):
         raise HTTPException(
             status_code=400,
@@ -80,7 +79,6 @@ async def ingest_pdf(file: UploadFile = File(...)):
     doc_id = _derive_doc_id(file.filename)
     logger.info(f"Starting ingestion: {file.filename} -> doc_id={doc_id}")
 
-    # Save uploaded PDF to temp location
     tmp_dir = tempfile.mkdtemp()
     tmp_path = os.path.join(tmp_dir, file.filename)
     content = await file.read()
@@ -88,22 +86,18 @@ async def ingest_pdf(file: UploadFile = File(...)):
         f.write(content)
 
     try:
-        # Step 1: VLM extraction
         logger.info(f"[{doc_id}] Step 1: VLM extraction")
         pages = await vlm_service.extract_from_pdf(tmp_path)
 
-        # Step 2: Smart chunking
         logger.info(f"[{doc_id}] Step 2: Chunking ({len(pages)} pages)")
         chunks = chunking_service.chunk_pages(pages, doc_id)
 
-        # Step 3: Embedding
         logger.info(f"[{doc_id}] Step 3: Embedding ({len(chunks)} chunks)")
         chunk_texts = [c["chunk_text"] for c in chunks]
         embeddings = await embedding_service.embed_passages(chunk_texts)
         for chunk, emb in zip(chunks, embeddings):
             chunk["embedding"] = emb
 
-        # Step 4: Store in Oracle
         logger.info(f"[{doc_id}] Step 4: Oracle storage")
         doc_title = _extract_title_from_text(pages)
         doc_meta = {
@@ -124,7 +118,6 @@ async def ingest_pdf(file: UploadFile = File(...)):
             # Non-fatal: BM25 will work after next sync cycle
             logger.warning(f"Text index sync warning: {e}")
 
-        # Build response
         all_tables = []
         all_figures = []
         for page in pages:
@@ -164,7 +157,6 @@ async def ingest_pdf(file: UploadFile = File(...)):
         )
 
     finally:
-        # Cleanup temp file
         try:
             os.remove(tmp_path)
             os.rmdir(tmp_dir)

@@ -22,7 +22,6 @@ from routers.fusion import router as fusion_router
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "info").upper())
 logger = logging.getLogger(__name__)
 
-# --- Environment Variables ---
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://ollama:11434")
 ORACLE_HOST = os.getenv("ORACLE_HOST", "oracle")
 ORACLE_USER = os.getenv("ORACLE_USER", "fieldops")
@@ -80,7 +79,6 @@ async def readiness():
     """
     checks = {}
 
-    # Check Oracle connection
     try:
         dsn = f"{ORACLE_HOST}:1521/{ORACLE_SERVICE}"
         conn = oracledb.connect(user=ORACLE_USER, password=ORACLE_PASSWORD, dsn=dsn)
@@ -92,7 +90,6 @@ async def readiness():
     except Exception as e:
         checks["oracle"] = f"error: {str(e)}"
 
-    # Check Ollama connection
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             resp = await client.get(f"{OLLAMA_HOST}/api/tags")
@@ -105,7 +102,6 @@ async def readiness():
     except Exception as e:
         checks["ollama"] = f"error: {str(e)}"
 
-    # Check Embedding connection
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             resp = await client.get(f"{EMBEDDING_HOST}/health")
