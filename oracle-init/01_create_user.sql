@@ -4,7 +4,10 @@
 
 ALTER SESSION SET CONTAINER = FREEPDB1;
 
-CREATE USER fieldops IDENTIFIED BY "***REMOVED***"
+-- WARNING: Replace 'changeme' below with a strong password BEFORE first startup.
+--   This password is only used during the first 'docker compose up' with an empty oracle-data volume.
+--   For existing environments, change the password via: ALTER USER fieldops IDENTIFIED BY "<your-password>";
+CREATE USER fieldops IDENTIFIED BY "changeme"
   DEFAULT TABLESPACE USERS
   TEMPORARY TABLESPACE TEMP
   QUOTA UNLIMITED ON USERS;
