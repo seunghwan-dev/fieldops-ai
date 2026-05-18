@@ -1,8 +1,8 @@
 # Thermal Stability Analysis of Material X in High-Shear Mixing Processes
 
-**Authors**: J. Kim, S. Park, M. Lee  
-**Affiliation**: Advanced Materials Processing Laboratory, Korea Institute of Chemical Technology  
-**Received**: 2024-08-15 | **Accepted**: 2024-11-02 | **Published**: 2025-01-10  
+**Authors**: J. Kim, S. Park, M. Lee
+**Affiliation**: Advanced Materials Processing Laboratory, Korea Institute of Chemical Technology
+**Received**: 2024-08-15 | **Accepted**: 2024-11-02 | **Published**: 2025-01-10
 **DOI**: 10.1016/j.jmatprotec.2025.01.042
 
 ---

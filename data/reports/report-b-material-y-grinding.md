@@ -1,9 +1,9 @@
 # Experimental Report: Material Y Jet Mill Grinding
 
-**Report No.**: EXP-2024-MY-007  
-**Date**: 2024-11-20  
-**Author**: H. Tanaka, Particle Engineering Team  
-**Classification**: Internal Use Only  
+**Report No.**: EXP-2024-MY-007
+**Date**: 2024-11-20
+**Author**: H. Tanaka, Particle Engineering Team
+**Classification**: Internal Use Only
 **Equipment**: Jet mill JM-200 (200 mm grinding chamber)
 
 ---
@@ -74,6 +74,6 @@ Establish particle size reduction parameters for Material Y using jet mill grind
 
 ---
 
-**Reviewed by**: Dr. R. Patel, Head of Particle Engineering  
-**Date**: 2024-11-25  
+**Reviewed by**: Dr. R. Patel, Head of Particle Engineering
+**Date**: 2024-11-25
 **Status**: Approved for distribution

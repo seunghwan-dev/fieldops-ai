@@ -1,0 +1,88 @@
+# Gitleaks config for fieldops-ai
+# Purpose: prevent recurrence of YourPassword123-style weak password leaks
+#
+# Design history (post-incident hardening, 4 iterations):
+# 1. Initial: regexTarget default mismatch → 13 false positives
+# 2. regexTarget="line" → 3 false positives (kwarg pattern uncovered)
+# 3. regexTarget="secret" + UPPER_SNAKE allowlist → 1 FP (multi-hyphen)
+#    + detection gap for quoted env literals
+# 4. (current) Multi-hyphen your-X allowlist + quoted-aware rule regex → target 0/4
+#
+# Key design decisions:
+# - regexTarget="secret" with explicit secretGroup (avoid history-mode Line empty quirk)
+# - Allowlist anchored ^...$ (exact match against captured value)
+# - your-X placeholder uses (-_word)+ pattern (multi-hyphen, but separator required)
+# - Rule regex captures both quoted and unquoted values
+# - ***REMOVED*** (filter-repo marker) always allowed
+
+title = "fieldops-ai gitleaks config"
+
+[extend]
+useDefault = true
+
+# ===== Global allowlist =====
+[allowlist]
+description = "Global path exclusions"
+paths = [
+  '''\.md$''',
+  '''docs/.*''',
+  '''\.gitleaks\.toml$''',
+  '''\.pre-commit-config\.yaml$''',
+  '''\.github/workflows/.*\.ya?ml$''',
+]
+
+# ===== Custom Rule 1: env-style hardcoded passwords =====
+# Catches both quoted (KEY="value") and unquoted (KEY=value) forms.
+# Allows: placeholders, UPPER_SNAKE refs, code patterns (os.getenv etc).
+[[rules]]
+id = "env-style-password"
+description = "Hardcoded password/secret/token in env-style assignment"
+regex = '''(?i)(PASSWORD|PASSWD|PWD|SECRET|TOKEN|API[_-]?KEY)\s*=\s*["']?([^\s"'#${}<][^\s"'#]{2,})["']?'''
+secretGroup = 2
+keywords = ["password", "passwd", "pwd", "secret", "token", "api_key", "api-key", "apikey"]
+
+[rules.allowlist]
+description = "Allow placeholders, variable refs, and code patterns"
+regexTarget = "secret"
+regexes = [
+  # Specific placeholder values
+  '''(?i)^(changeme|placeholder|example|dummy|test|fake|sample|null|none|todo|tbd|redacted)['"]*[,)\s]*$''',
+  '''(?i)^xxx+['"]*[,)\s]*$''',
+  # your-X placeholders: require at least one separator (- or _) after "your"
+  # Supports multi-hyphen forms like your-api-key-here
+  # Does NOT match YourPassword123 (no separator after "your")
+  '''(?i)^your([-_][a-z0-9]+)+['"]*[,)\s]*$''',
+  # Angle-bracket placeholders
+  '''^<[^>]+>['"]*[,)\s]*$''',
+  # filter-repo marker
+  '''^\*\*\*REMOVED\*\*\*['"]*[,)\s]*$''',
+  # UPPER_SNAKE_CASE variable references (Python/JS kwargs)
+  '''^[A-Z][A-Z0-9_]{2,}[,)\s]*$''',
+  # Function calls / property access
+  '''^os\.getenv\b''',
+  '''^os\.environ\b''',
+  '''^process\.env\b''',
+  '''^Deno\.env\b''',
+  '''^import\.meta\.env\b''',
+  '''^System\.getenv\b''',
+  '''^@Value\(''',
+]
+
+# ===== Custom Rule 2: SQL IDENTIFIED BY hardcoded =====
+[[rules]]
+id = "sql-identified-by"
+description = "SQL CREATE/ALTER USER with hardcoded password literal"
+regex = '''(?i)IDENTIFIED\s+BY\s+['"]([^${&'"]+)['"]'''
+secretGroup = 1
+keywords = ["identified by"]
+
+[rules.allowlist]
+description = "Allow placeholders, sqlplus substitution, filter-repo marker"
+regexTarget = "secret"
+regexes = [
+  '''(?i)^(changeme|placeholder|example|dummy)$''',
+  '''(?i)^your([-_][a-z0-9]+)+$''',
+  '''^<[^>]+>$''',
+  '''^\*\*\*REMOVED\*\*\*$''',
+  '''^&[A-Z_]+$''',
+]

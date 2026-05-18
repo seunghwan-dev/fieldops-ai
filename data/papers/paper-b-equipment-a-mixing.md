@@ -1,8 +1,8 @@
 # Characterization of Mixing Performance in Sigma-Blade Kneaders
 
-**Authors**: T. Nakamura, A. Kowalski, R. Patel  
-**Affiliation**: Department of Chemical Engineering, Tokyo Institute of Technology  
-**Received**: 2024-05-20 | **Accepted**: 2024-09-10 | **Published**: 2024-12-01  
+**Authors**: T. Nakamura, A. Kowalski, R. Patel
+**Affiliation**: Department of Chemical Engineering, Tokyo Institute of Technology
+**Received**: 2024-05-20 | **Accepted**: 2024-09-10 | **Published**: 2024-12-01
 **DOI**: 10.1002/aic.2024.18134
 
 ---

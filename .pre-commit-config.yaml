@@ -1,0 +1,22 @@
+# Pre-commit hooks for fieldops-ai
+# Purpose: prevent credential leaks at commit time (post-incident hardening)
+# Setup: pip install pre-commit && pre-commit install
+
+repos:
+  # ===== Secret scanning =====
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.0
+    hooks:
+      - id: gitleaks
+        args: ['--config=.gitleaks.toml']
+
+  # ===== General hygiene =====
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=1024']
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace

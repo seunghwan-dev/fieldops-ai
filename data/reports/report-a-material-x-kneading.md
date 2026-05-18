@@ -1,9 +1,9 @@
 # Experimental Report: Material X Kneading Trials
 
-**Report No.**: EXP-2024-MX-003  
-**Date**: 2024-10-15  
-**Author**: S. Park, Process Engineering Team  
-**Classification**: Internal Use Only  
+**Report No.**: EXP-2024-MX-003
+**Date**: 2024-10-15
+**Author**: S. Park, Process Engineering Team
+**Classification**: Internal Use Only
 **Equipment**: Sigma-blade kneader SK-5L (5-liter capacity)
 
 ---
@@ -80,11 +80,11 @@ Determine the operational envelope for Material X kneading by systematically var
 
 ## Appendix: Raw Data Access
 
-Full time-series data for all 8 tests is archived in the process data server:  
+Full time-series data for all 8 tests is archived in the process data server:
 `\\server\process_data\2024\MX-003\`
 
 ---
 
-**Reviewed by**: Dr. J. Kim, Chief Process Engineer  
-**Date**: 2024-10-18  
+**Reviewed by**: Dr. J. Kim, Chief Process Engineer
+**Date**: 2024-10-18
 **Status**: Approved for distribution
