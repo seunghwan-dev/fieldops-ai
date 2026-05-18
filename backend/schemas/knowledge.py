@@ -6,6 +6,8 @@ RISK: None. Standard Pydantic pattern.
 INTERVIEW: "Explicit schemas make the API self-documenting via Swagger."
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, field_validator
 
 
@@ -50,6 +52,13 @@ class IngestResponse(BaseModel):
     chunk_distribution: ChunkDistribution
     tables: list[TableExtraction] = []
     figures: list[FigureExtraction] = []
+    # WHY: status indicates idempotency outcome:
+    #   "new" = first ingestion (no prior doc_id)
+    #   "updated" = same doc_id, different bytes (old chunks replaced)
+    #   "unchanged" = same doc_id + same hash (VLM/embedding skipped, returned existing)
+    # file_hash is SHA-256 of the raw uploaded bytes (byte-level identity).
+    status: Literal["new", "updated", "unchanged"]
+    file_hash: str  # SHA-256 hex digest (64 chars)
 
 
 class VLMPageResult(BaseModel):

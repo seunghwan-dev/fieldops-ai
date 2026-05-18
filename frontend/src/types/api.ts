@@ -19,6 +19,8 @@ export interface IngestResponse {
     type: string;
     semantic_summary: string;
   }>;
+  status: 'new' | 'updated' | 'unchanged';
+  file_hash: string; // SHA-256 hex digest (64 chars)
 }
 
 export interface SearchResult {

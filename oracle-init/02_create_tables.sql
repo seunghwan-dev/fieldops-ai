@@ -15,7 +15,9 @@ CREATE TABLE KNOWLEDGE_DOCS (
     file_path     VARCHAR2(500),
     page_count    NUMBER,
     vlm_processed NUMBER(1)      DEFAULT 0,
-    created_at    TIMESTAMP      DEFAULT SYSTIMESTAMP
+    created_at    TIMESTAMP      DEFAULT SYSTIMESTAMP,
+    file_hash     VARCHAR2(64),
+    updated_at    TIMESTAMP      DEFAULT SYSTIMESTAMP
 );
 
 -- Source 1: Literature Knowledge (text + figure semantics)

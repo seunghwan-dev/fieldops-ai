@@ -37,6 +37,8 @@ export const mockIngestResponse: IngestResponse = {
         'Temperature vs Decomposition Rate showing inflection point at ~180C and thermal runaway zone >200C.',
     },
   ],
+  status: 'new',
+  file_hash: 'a'.repeat(64), // placeholder, deterministic for DEMO mode
 };
 
 export const mockKnowledgeResults: Record<string, IngestResponse> = {
@@ -62,6 +64,8 @@ export const mockKnowledgeResults: Record<string, IngestResponse> = {
       },
     ],
     figures: [],
+    status: 'new',
+    file_hash: 'a'.repeat(64),
   },
   'paper-b': {
     doc_id: 'paper-b-equipment-a-mixing',
@@ -91,6 +95,8 @@ export const mockKnowledgeResults: Record<string, IngestResponse> = {
           'Discharge temperature profile across 7 blade types at fixed RPM and inlet rate.',
       },
     ],
+    status: 'new',
+    file_hash: 'a'.repeat(64),
   },
 };
 

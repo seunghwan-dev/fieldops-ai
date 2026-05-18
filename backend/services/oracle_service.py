@@ -51,41 +51,73 @@ async def _get_pool():
 
 async def insert_doc(doc: dict) -> str:
     """
-    Insert document metadata into KNOWLEDGE_DOCS.
+    Upsert document metadata into KNOWLEDGE_DOCS (UPDATE-if-exists else INSERT).
 
     WHY: Tracks which documents have been ingested and VLM-processed.
          Deletes existing chunks from BOTH dual-source tables before re-ingestion.
+    WHY: UPDATE-if-exists preserves the original created_at while refreshing
+         updated_at. The old DELETE+INSERT lost created_at on every re-ingest.
+    WHY: Cascade is application-level since the chunks FK has no ON DELETE CASCADE.
+    RISK: insert_doc and insert_chunks run in SEPARATE transactions (different
+          cursors). Concurrent same-doc_id uploads could race (ORA-00001 or
+          chunk mismatch). Out of scope per HQ2 D4 — left as-is intentionally.
+    INTERVIEW: PoC scope. Production hardening: asyncio.Lock per doc_id OR
+               SELECT ... FOR UPDATE on the KNOWLEDGE_DOCS row.
     """
     pool = await _get_pool()
     async with pool.acquire() as conn:
         async with conn.cursor() as cursor:
-            # WHY: Delete existing doc + chunks to allow re-ingestion.
+            # WHY: Delete existing chunks to allow re-ingestion.
             #      Chunks in both tables have FK to docs, so delete chunks first.
             await cursor.execute(
-                "DELETE FROM LITERATURE_CHUNKS WHERE doc_id = :1",
-                [doc["doc_id"]],
+                "DELETE FROM LITERATURE_CHUNKS WHERE doc_id = :doc_id",
+                {"doc_id": doc["doc_id"]},
             )
             await cursor.execute(
-                "DELETE FROM QUANTITATIVE_CHUNKS WHERE doc_id = :1",
-                [doc["doc_id"]],
+                "DELETE FROM QUANTITATIVE_CHUNKS WHERE doc_id = :doc_id",
+                {"doc_id": doc["doc_id"]},
             )
+            # WHY: Named binds (not positional :1) — UPDATE's bind order differs
+            #      from INSERT's, and named binding matches the pattern already
+            #      used by vector_search/bm25_search in this module.
             await cursor.execute(
-                "DELETE FROM KNOWLEDGE_DOCS WHERE doc_id = :1",
-                [doc["doc_id"]],
+                "SELECT 1 FROM KNOWLEDGE_DOCS WHERE doc_id = :doc_id",
+                {"doc_id": doc["doc_id"]},
             )
-            await cursor.execute(
-                """INSERT INTO KNOWLEDGE_DOCS
-                   (doc_id, doc_title, doc_type, file_path, page_count, vlm_processed)
-                   VALUES (:1, :2, :3, :4, :5, :6)""",
-                [
-                    doc["doc_id"],
-                    doc["doc_title"],
-                    doc["doc_type"],
-                    doc.get("file_path", ""),
-                    doc.get("page_count", 0),
-                    1,
-                ],
-            )
+            exists = await cursor.fetchone()
+            params = {
+                "doc_id": doc["doc_id"],
+                "doc_title": doc["doc_title"],
+                "doc_type": doc["doc_type"],
+                "file_path": doc.get("file_path", ""),
+                "page_count": doc.get("page_count", 0),
+                "vlm_processed": 1,
+                "file_hash": doc.get("file_hash"),
+            }
+            if exists:
+                # WHY: created_at is intentionally NOT in the SET list.
+                await cursor.execute(
+                    """UPDATE KNOWLEDGE_DOCS
+                       SET doc_title = :doc_title,
+                           doc_type = :doc_type,
+                           file_path = :file_path,
+                           page_count = :page_count,
+                           vlm_processed = :vlm_processed,
+                           file_hash = :file_hash,
+                           updated_at = SYSTIMESTAMP
+                       WHERE doc_id = :doc_id""",
+                    params,
+                )
+            else:
+                # WHY: created_at + updated_at fall back to DEFAULT SYSTIMESTAMP.
+                await cursor.execute(
+                    """INSERT INTO KNOWLEDGE_DOCS
+                       (doc_id, doc_title, doc_type, file_path, page_count,
+                        vlm_processed, file_hash)
+                       VALUES (:doc_id, :doc_title, :doc_type, :file_path,
+                               :page_count, :vlm_processed, :file_hash)""",
+                    params,
+                )
             await conn.commit()
     logger.info(f"Inserted doc: {doc['doc_id']}")
     return doc["doc_id"]
@@ -203,6 +235,54 @@ async def get_doc(doc_id: str) -> dict | None:
                 "file_path": row[3],
                 "page_count": row[4],
                 "vlm_processed": row[5],
+            }
+
+
+async def get_doc_hash(doc_id: str) -> str | None:
+    """
+    Return file_hash for doc_id, or None if the doc doesn't exist.
+
+    WHY: Short-circuit dedup check before the expensive VLM/embedding pipeline.
+    """
+    pool = await _get_pool()
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cursor:
+            await cursor.execute(
+                "SELECT file_hash FROM KNOWLEDGE_DOCS WHERE doc_id = :doc_id",
+                {"doc_id": doc_id},
+            )
+            row = await cursor.fetchone()
+            return row[0] if row else None
+
+
+async def get_doc_meta(doc_id: str) -> dict | None:
+    """
+    Return full document metadata (incl. file_hash + timestamps), or None.
+
+    WHY: get_doc() omits file_hash/created_at/updated_at. The "unchanged"
+         short-circuit response needs the full row without re-running VLM.
+    """
+    pool = await _get_pool()
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cursor:
+            await cursor.execute(
+                """SELECT doc_id, doc_title, doc_type, file_path, file_hash,
+                          page_count, created_at, updated_at
+                   FROM KNOWLEDGE_DOCS WHERE doc_id = :doc_id""",
+                {"doc_id": doc_id},
+            )
+            row = await cursor.fetchone()
+            if not row:
+                return None
+            return {
+                "doc_id": row[0],
+                "doc_title": row[1],
+                "doc_type": row[2],
+                "file_path": row[3],
+                "file_hash": row[4],
+                "page_count": row[5],
+                "created_at": row[6],
+                "updated_at": row[7],
             }
 
 

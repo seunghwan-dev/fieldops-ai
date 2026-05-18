@@ -9,6 +9,7 @@ INTERVIEW: "One API call triggers: VLM extraction -> smart chunking -> embedding
 
 import os
 import logging
+import hashlib
 import tempfile
 from pathlib import Path
 
@@ -60,8 +61,37 @@ def _extract_title_from_text(pages) -> str:
     return "Untitled Document"
 
 
+async def _build_unchanged_response(doc_id: str, file_hash: str) -> IngestResponse:
+    """
+    Return the response for an unchanged re-upload without re-processing.
+
+    WHY: tables[]/figures[] are empty because they originate from VLM extraction,
+         which is intentionally skipped on "unchanged". Frontend should rely on
+         status="unchanged" rather than re-displaying extraction details.
+    """
+    meta = await oracle_service.get_doc_meta(doc_id)
+    if meta is None:
+        # WHY: get_doc_hash returned non-None, so the row should exist. If it
+        #      vanished (concurrent delete), treat as inconsistent state.
+        raise HTTPException(status_code=500, detail="Inconsistent doc state")
+
+    chunks_count = await oracle_service.get_chunk_count(doc_id)
+
+    return IngestResponse(
+        doc_id=doc_id,
+        doc_title=meta["doc_title"],
+        pages_processed=meta["page_count"] or 0,
+        chunks_created=chunks_count,
+        chunk_distribution=ChunkDistribution(text=0, table_row=0, figure=0),
+        tables=[],
+        figures=[],
+        status="unchanged",
+        file_hash=file_hash,
+    )
+
+
 @router.post("/knowledge/ingest", response_model=IngestResponse)
-async def ingest_pdf(file: UploadFile = File(...)):
+async def ingest_pdf(file: UploadFile = File(...)) -> IngestResponse:
     """
     Ingest a PDF document through the VLM pipeline.
 
@@ -77,11 +107,27 @@ async def ingest_pdf(file: UploadFile = File(...)):
         )
 
     doc_id = _derive_doc_id(file.filename)
-    logger.info(f"Starting ingestion: {file.filename} -> doc_id={doc_id}")
+
+    content = await file.read()
+    # WHY: Byte-level identity. Same content -> same hash regardless of metadata.
+    # WHY: Computed before tmp-file write so an unchanged re-upload short-circuits
+    #      BEFORE the expensive VLM -> chunk -> embed pipeline runs.
+    file_hash = hashlib.sha256(content).hexdigest()
+
+    existing_hash = await oracle_service.get_doc_hash(doc_id)
+    if existing_hash is not None and existing_hash == file_hash:
+        logger.info(f"Unchanged re-upload: {file.filename} -> doc_id={doc_id} "
+                    f"(hash match, skipping VLM/embedding)")
+        return await _build_unchanged_response(doc_id, file_hash)
+
+    # WHY: existing_hash present but different => bytes changed => "updated".
+    #      No prior doc_id => first ingestion => "new".
+    status = "updated" if existing_hash is not None else "new"
+    logger.info(f"Starting ingestion: {file.filename} -> doc_id={doc_id} "
+                f"(status={status})")
 
     tmp_dir = tempfile.mkdtemp()
     tmp_path = os.path.join(tmp_dir, file.filename)
-    content = await file.read()
     with open(tmp_path, "wb") as f:
         f.write(content)
 
@@ -106,6 +152,7 @@ async def ingest_pdf(file: UploadFile = File(...)):
             "doc_type": _infer_doc_type(file.filename),
             "file_path": file.filename,
             "page_count": len(pages),
+            "file_hash": file_hash,
         }
         await oracle_service.insert_doc(doc_meta)
         await oracle_service.insert_chunks(chunks)
@@ -154,6 +201,8 @@ async def ingest_pdf(file: UploadFile = File(...)):
             chunk_distribution=dist,
             tables=all_tables,
             figures=all_figures,
+            status=status,
+            file_hash=file_hash,
         )
 
     finally:

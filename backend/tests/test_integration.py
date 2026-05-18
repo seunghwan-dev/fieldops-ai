@@ -39,12 +39,16 @@ class TestVLMToOracle:
         B02: Paper-A has text and table chunk types.
 
         WHY: VLM should extract ALL content types, not just text.
+        NOTE: A unique byte marker forces a full re-ingest ("updated") instead
+              of the work-3 dedup short-circuit, which returns a zeroed
+              chunk_distribution and would fail the assertions below.
         """
         with open(sample_pdf_path, "rb") as f:
-            response = test_client.post(
-                "/api/v1/knowledge/ingest",
-                files={"file": ("paper_a.pdf", f, "application/pdf")}
-            )
+            content = f.read() + b"\n%run_id=test_vlm_chunk_types\n"
+        response = test_client.post(
+            "/api/v1/knowledge/ingest",
+            files={"file": ("paper_a.pdf", content, "application/pdf")}
+        )
         data = response.json()
         dist = data["chunk_distribution"]
         assert dist["text"] > 0
