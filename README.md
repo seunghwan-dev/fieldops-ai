@@ -103,3 +103,14 @@ Chunks are routed by type into **two physically separated Oracle tables** (MDSK-
 | `table_row` | `QUANTITATIVE_CHUNKS` | Numeric / threshold lookups |
 
 Qualitative queries target the literature table; numeric-condition queries (e.g., "discharge temp > 200°C") target the quantitative table. Both feed the hybrid (vector + BM25 + RRF) pipeline.
+
+## Roadmap
+
+This repository is a technical validation; the items below are designed extensions, not yet implemented.
+
+- **Query rewriting** — rewrite user queries before retrieval to improve recall on under-specified questions
+- **CI/CD expansion** — extend the existing secret-scan and Pages-deploy workflows into full test/build automation
+- **LLM token & cost tracking** — per-request token accounting across Ollama and Azure
+- **Metrics & dashboards** — Prometheus + Grafana for latency, retrieval quality, and fusion confidence
+- **TLS reverse proxy** — HTTPS termination for non-localhost deployment
+- **Deployment architecture doc** — production topology beyond the local docker-compose stack
