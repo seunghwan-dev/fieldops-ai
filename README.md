@@ -1,5 +1,7 @@
 # FieldOps-AI
 
+**Technical Validation — RAG Hybrid Search + Domain-ML Fusion**
+
 [日本語版はこちら](README-ja.md)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)

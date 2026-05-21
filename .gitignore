@@ -53,3 +53,9 @@ notes/
 
 # HQ2 audit / temp reports
 *_report.txt
+
+# Hardening: generic .env variants + cert bundles
+.env.*
+!.env.example
+*.pfx
+*.p12
