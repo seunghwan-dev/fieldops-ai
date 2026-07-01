@@ -2,6 +2,8 @@
 
 **技術検証 — RAG ハイブリッド検索 + Domain-ML Fusion**
 
+> **免責事項:** 本プロジェクトは技術検証・学習を目的とした個人開発であり、使用データはすべてモック（模擬）データです。特定の企業・製品の実データやパラメータ、機密情報は一切含まれていません。
+
 [English version](README.md)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)

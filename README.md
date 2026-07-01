@@ -2,6 +2,8 @@
 
 **Technical Validation — RAG Hybrid Search + Domain-ML Fusion**
 
+> **Disclaimer:** This is a personal project for technical validation and learning purposes. All data used is mock/synthetic data. It contains no real data, parameters, or confidential information from any specific company or product.
+
 [日本語版はこちら](README-ja.md)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
