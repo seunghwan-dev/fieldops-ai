@@ -2,7 +2,7 @@
 
 **Technical Validation — RAG Hybrid Search + Domain-ML Fusion**
 
-> **Disclaimer:** This is a personal project for technical validation and learning purposes. All data used is mock/synthetic data. It contains no real data, parameters, or confidential information from any specific company or product.
+Personal project exploring how manufacturing field problems can be tackled with RAG and Domain-ML Fusion. Built and validated entirely on mock (synthetic) data — it uses no real data or parameters from any specific company or product.
 
 [日本語版はこちら](README-ja.md)
 
